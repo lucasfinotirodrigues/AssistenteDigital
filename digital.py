@@ -6,7 +6,9 @@ import wikipedia
 
 wikipedia.set_lang("pt")
 
-engine = pyttsx3.init("sapi5")
+# engine = pyttsx3.init("sapi5")
+engine = pyttsx3.init("espeak")
+
 engine.setProperty('voice', engine.getProperty("voices")[0].id)
 
 
