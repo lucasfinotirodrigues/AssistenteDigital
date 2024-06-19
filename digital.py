@@ -14,33 +14,38 @@ def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
-def getComando():
-    r = sr.Recognizer() # Reconhecendo o áudio
-    with sr.Microphone() as source: # Ativando o microfone
-        print("Ouvindo o áudio...")
-        r.pause_threshold = 1 # Aguardando a pessoa falar
-        audio = r.listen(source) # Armazenando o que foi dito
+def get_command():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Ouvindo...")
+        r.pause_threshold = 1
+        audio = r.listen(source)
     try:
-        print("Reconhecendo o áudio...")
+        print("Reconhecendo...")
         command = r.recognize_google(audio, language='pt-br')
-        print("O usuário falou: " + command + "\n")
+        print("Usuário falou: " + command + "\n")
     except Exception as e:
         print(e)
-        speak("Não entendi")
-        return ""
+        speak("Eu não entendo")
+        return "None"
     return command
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     speak("Assistente Digital foi ativada")
     speak("Olá! Como eu posso te ajudar?")
 
-    while(True):
-        command = getComando().lower()
-        if 'wikipedia' in command:
-            command = command.replace("wikipédia","")
-            command = command.replace("procure na","")
-            command = command.replace("pesquise na","")
-
+    while True:
+        command = get_command().lower()
+        if 'wikipédia' in command:
+            speak("Procurando na Wikipedia ...")
+            command = command.replace("Wikipédia","")
+            command = command.replace("Procure na","")
+            command = command.replace("Pesquise na","")
             results = wikipedia.summary(command, sentences=2)
             speak("De acordo com a Wikipédia")
             speak(results)
+        elif 'está tudo bem' in command:
+            speak("Olá amigo, eu vou bem, obrigado por perguntar")
+        elif 'tchau' in command:
+            speak("Tchau, até mais")
+            exit(0)
